@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<style type="text/css">
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+</style>
+
+</head>
+<body>
+
+	<div class="container">
+		<h2>Users..</h2>
+		<p>Choose appropriate actions...</p>
+		<div class="row">
+			<div class="col-lg-8">
+				<div class="input-group">
+					<div id="pnlMenu" class="input-group-btn">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Action <span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+							<li><a id="getByPage" href="#">Get users by the page</a></li>
+							<li><a id="getUser" href="#">Get user</a></li>
+							<li><a id="createUser" href="#">Create user</a></li>
+							<li><a id="updateUser" href="#">Update user</a></li>
+							<li><a id="deleteUser" href="#">Delete user</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a id="getByPageRoles" href="#">Get roles by the page</a></li>
+							<li><a id="getRole" href="#">Get role</a></li>
+							<li><a id="createRole" href="#">Create role</a></li>
+							<li><a id="updateRole" href="#">Update role</a></li>
+							<li><a id="deleteRole" href="#">Delete role</a></li>
+							<li class="dropdown-submenu"><a tabindex="-1" href="#">Roles (more options)</a>
+								<ul class="dropdown-menu">
+									<li><a id="getByUserRoles" href="#">Get roles by the user</a></li>
+									<li><a id="createRoleUser" href="#">Create role for user</a></li>
+									<li><a id="deleteRoleUser" href="#">Remove role for user</a></li>
+								</ul></li>
+						</ul>
+					</div>
+					<label id="lblAction" class="form-control" aria-label="...">Not selected...</label> 
+					<span class="input-group-btn">
+						<button id="btnGo" class="btn btn-primary" type="button" disabled>Go!</button>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<div id="pnlBigRequest" class="panel panel-default" style="margin-top: 20px;">
+
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-lg-6">Request</div>
+					<div class="col-lg-6">Response</div>
+				</div>
+			</div>
+
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-6">
+						<textarea id="txtBigRequest" class="form-control" rows="10" style="resize:none"></textarea>
+						<input id="txtSmallRequest" type="text" class="form-control" placeholder="Search for ID...">
+					</div>
+					<div class="col-lg-6">
+						<textarea id="txtBigResponse" class="form-control" rows="10" style="resize:none" readonly></textarea>
+						<p id="pCnt">Count...</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="user.js"></script>
+</body>
+</html>
