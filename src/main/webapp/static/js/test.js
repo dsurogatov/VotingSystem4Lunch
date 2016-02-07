@@ -19,7 +19,11 @@ $('div.input-group-btn ul.dropdown-menu li a').click(function(e) {
 });
 
 var currentAction;
-var contextName = '/VotingSystem4Lunch';
+//var contextName = '/VotingSystem4Lunch';
+var contextName = getContextPath();
+function getContextPath() {
+    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+}
 
 var pnlBigRequest = $('#pnlBigRequest');
 var txtBigRequest = $('#txtBigRequest');
