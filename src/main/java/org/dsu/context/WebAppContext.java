@@ -48,4 +48,5 @@ public class WebAppContext extends WebMvcConfigurerAdapter {
     public JpaContext jpaContext() {
     	return new JpaContext();
     }
+    
 }

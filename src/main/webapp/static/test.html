@@ -2,9 +2,9 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.css">
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
 
 <style type="text/css">
 .dropdown-submenu {
@@ -60,7 +60,7 @@
 <body>
 
 	<div class="container">
-		<h2>Users..</h2>
+		<h2>Test form for VotingSystem4Lunch..</h2>
 		<p>Choose appropriate actions...</p>
 		<div class="row">
 			<div class="col-lg-8">
@@ -69,7 +69,10 @@
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Action <span class="caret"></span>
 						</button>
-						<ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+							<li><a id="login" href="#">Login to service</a></li>
+							<li><a id="logout" href="#">Logout</a></li>
+							<li role="separator" class="divider"></li>
 							<li><a id="getByPage" href="#">Get users by the page</a></li>
 							<li><a id="getUser" href="#">Get user</a></li>
 							<li><a id="createUser" href="#">Create user</a></li>
@@ -90,9 +93,12 @@
 						</ul>
 					</div>
 					<label id="lblAction" class="form-control" aria-label="...">Not selected...</label> 
-					<span class="input-group-btn">
+					<div class="input-group-btn">
 						<button id="btnGo" class="btn btn-primary" type="button" disabled>Go!</button>
-					</span>
+					</div>
+					<div id="pNoAuth" class="input-group-addon alert-danger">
+						<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Unauthorized
+					</div>
 				</div>
 			</div>
 		</div>
@@ -121,6 +127,6 @@
 		</div>
 	</div>
 	
-	<script src="user.js"></script>
+	<script src="js/test.js"></script>
 </body>
 </html>

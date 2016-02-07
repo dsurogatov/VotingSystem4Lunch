@@ -1,8 +1,8 @@
 $('div.input-group-btn ul.dropdown-menu li a').click(function(e) {
-//    var $div = $(this).parent().parent().parent();
+    // var $div = $(this).parent().parent().parent();
     var $div = $('#pnlMenu');
     $div.removeClass('open');
-    if(!this.id) {
+    if (!this.id) {
         return;
     }
 
@@ -26,6 +26,15 @@ var txtBigRequest = $('#txtBigRequest');
 var txtSmallRequest = $('#txtSmallRequest');
 var txtBigResponse = $('#txtBigResponse');
 var pCnt = $('#pCnt');
+var pNoAuth = $('#pNoAuth');
+
+var showNoAuth = function(show) {
+    if(show) {
+        pNoAuth.show();
+    } else {
+        pNoAuth.hide();
+    }
+};
 
 var changeView = function(typeView) {
     currentAction = typeView;
@@ -53,8 +62,8 @@ var changeView = function(typeView) {
         txtBigRequest.hide();
         pCnt.hide();
         txtSmallRequest.show();
-    } else if (typeView == 'createUser' || typeView == 'createRole' 
-        || typeView == 'createRoleUser' || typeView == 'deleteRoleUser') {
+    } else if (typeView == 'login' || 
+            typeView == 'createUser' || typeView == 'createRole' || typeView == 'createRoleUser' || typeView == 'deleteRoleUser') {
         var reqObj = {
             id : null,
             name : 'a',
@@ -73,6 +82,11 @@ var changeView = function(typeView) {
             reqObj = {
                 userId : 1,
                 roleId : 2
+            };
+        } else if (typeView == 'login') {
+            reqObj = {
+                username : 'user1',
+                password : 'user2',
             };
         }
 
@@ -118,6 +132,7 @@ changeView('getByPage');
 $('#lblAction').html('Get users by the page');
 var btnGo = $('#btnGo');
 btnGo.removeAttr("disabled");
+showNoAuth(false);
 
 var post = function(url, data, succF) {
     $.ajax({
@@ -127,6 +142,10 @@ var post = function(url, data, succF) {
         dataType : "json",
         contentType : "application/json",
         success : succF
+    }).fail(function(xhr) {
+        if(xhr.status == 401) {
+            showNoAuth(true);
+        }
     });
 };
 var put = function(url, data, succF) {
@@ -137,6 +156,10 @@ var put = function(url, data, succF) {
         dataType : "json",
         contentType : "application/json",
         success : succF
+    }).fail(function(xhr) {
+        if(xhr.status == 401) {
+            showNoAuth(true);
+        }
     });
 };
 var delet = function(url, succF) {
@@ -144,6 +167,10 @@ var delet = function(url, succF) {
         url : url,
         type : "delete",
         success : succF
+    }).fail(function(xhr) {
+        if(xhr.status == 401) {
+            showNoAuth(true);
+        }
     });
 };
 var delet2 = function(url, data, succF) {
@@ -154,6 +181,10 @@ var delet2 = function(url, data, succF) {
         dataType : "json",
         contentType : "application/json",
         success : succF
+    }).fail(function(xhr) {
+        if(xhr.status == 401) {
+            showNoAuth(true);
+        }
     });
 };
 
@@ -171,13 +202,17 @@ $('#btnGo').click(function(e) {
             url = contextName + '/api/v1/role';
             countUrl = contextName + '/api/v1/role/count';
         }
-        
+
         var page = JSON.parse(txtBigRequest.val());
 
         // get entities
-        //"json=" + txtBigRequest.val()
+        // "json=" + txtBigRequest.val()
         $.getJSON(url, page, function(data) {
             txtBigResponse.val(JSON.stringify(data, null, '  '));
+        }).fail(function(xhr) {
+            if(xhr.status == 401) {
+                showNoAuth(true);
+            }
         });
 
         // get count
@@ -189,7 +224,7 @@ $('#btnGo').click(function(e) {
         });
     } else if (currentAction == 'getUser' || currentAction == 'getRole' || currentAction == 'getByUserRoles') {
         console.log('request is', txtSmallRequest.val());
-        
+
         var url = contextName + '/api/v1/user/id/' + txtSmallRequest.val();
         if (currentAction == 'getRole') {
             url = contextName + '/api/v1/role/id/' + txtSmallRequest.val();
@@ -199,6 +234,10 @@ $('#btnGo').click(function(e) {
 
         $.getJSON(url, function(data) {
             txtBigResponse.val(JSON.stringify(data, null, '  '));
+        }).fail(function(xhr) {
+            if(xhr.status == 401) {
+                showNoAuth(true);
+            }
         });
     } else if (currentAction == 'createUser' || currentAction == 'createRole' || currentAction == 'createRoleUser') {
         console.log('request is', JSON.parse(txtBigRequest.val()));
@@ -216,13 +255,13 @@ $('#btnGo').click(function(e) {
     } else if (currentAction == 'deleteRoleUser') {
         console.log('request is', JSON.parse(txtBigRequest.val()));
         var url = '/api/v1/role/user';
-        
+
         delet2(contextName + url, txtBigRequest.val(), function(data) {
             txtBigResponse.val('nice');
         });
     } else if (currentAction == 'updateUser' || currentAction == 'updateRole') {
         console.log('request is', JSON.parse(txtBigRequest.val()));
-        
+
         var url = contextName + '/api/v1/user';
         if (currentAction == 'updateRole') {
             url = contextName + '/api/v1/role';
@@ -231,10 +270,10 @@ $('#btnGo').click(function(e) {
         put(url, txtBigRequest.val(), function(data) {
             txtBigResponse.val(JSON.stringify(data, null, '  '));
             console.log('nice update');
-        })
+        });
     } else if (currentAction == 'deleteUser' || currentAction == 'deleteRole') {
         console.log('delete id is', txtSmallRequest.val());
-        
+
         var url = '/api/v1/user/';
         if (currentAction == 'deleteRole') {
             url = '/api/v1/role/';
@@ -242,6 +281,24 @@ $('#btnGo').click(function(e) {
 
         delet(contextName + url + txtSmallRequest.val(), function(data) {
             txtBigResponse.val('nice');
+        });
+    } else if (currentAction == 'login') {
+        console.log('request is', JSON.parse(txtBigRequest.val()));
+        var url = '/login';
+        
+        var page = JSON.parse(txtBigRequest.val());
+
+        $.post(contextName + url, page, function(data) {
+            txtBigResponse.val('Login was successful');
+            showNoAuth(false);
+        });
+    } else if (currentAction == 'logout') {
+        console.log('logout');
+        var url = '/logout';
+        
+        $.get(contextName + url, function(data) {
+            txtBigResponse.val('Logout was successful');
+            showNoAuth(true);
         });
     }
 });
