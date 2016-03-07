@@ -29,7 +29,8 @@ public class UserRoleController {
 			throw new MethodArgumentNotValidException(null, result);
 		}
 		//PageJson page = ControllerUtil.deserializePage(json);
-		return roleService.findByUser(user_id, page);
+		List<RoleDTO> roles = roleService.findByUser(user_id, page);
+		return roles;
 	}
 	
 	@RequestMapping(value = "/api/v1/role/user", method = RequestMethod.POST)

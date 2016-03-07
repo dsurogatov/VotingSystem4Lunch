@@ -1,17 +1,20 @@
 package org.dsu.service.role;
 
 import java.util.List;
+import java.util.Set;
 
 import org.dsu.common.VotingSystemException;
 import org.dsu.dao.api.CrudDao;
 import org.dsu.dao.api.PageProp;
 import org.dsu.dao.api.SortProp;
-import org.dsu.dao.role.RoleDao;
-import org.dsu.dao.user.UserDao;
+import org.dsu.dao.role.RoleDAO;
+import org.dsu.dao.user.UserDAO;
+import org.dsu.domain.model.Authority;
 import org.dsu.domain.model.Role;
 import org.dsu.domain.model.User;
 import org.dsu.domain.model.User_Role;
 import org.dsu.domain.model.User_RoleId;
+import org.dsu.dto.converter.ConverterUtils;
 import org.dsu.dto.model.RoleDTO;
 import org.dsu.json.PageJson;
 import org.dsu.service.api.AbstractNamedService;
@@ -25,9 +28,9 @@ import org.springframework.util.Assert;
 public class RoleServiceImpl extends AbstractNamedService<RoleDTO, Role> implements RoleService {
 
 	@Autowired
-	private RoleDao dao;
+	private RoleDAO dao;
 	@Autowired
-	private UserDao userDao;
+	private UserDAO userDao;
 	
 	@Override
 	protected CrudDao<Role> getDao() {
@@ -42,10 +45,10 @@ public class RoleServiceImpl extends AbstractNamedService<RoleDTO, Role> impleme
 			VotingSystemException.throwEntityNotFound(User.class);
 		}
 		
-		return dao.findByUserId(user_id, 
+		return ConverterUtils.toDTOList(dao.findByUserId(user_id, 
 				new PageProp(page.getStart(), page.getSize()), 
 				new SortProp(page.getSortingField(), page.isSortAsc())
-				);
+				));
 	}
 
 	@Override
@@ -89,6 +92,19 @@ public class RoleServiceImpl extends AbstractNamedService<RoleDTO, Role> impleme
 		user_roleId.setRole(role);
 		
 		dao.deleteUserRole(user_roleId);
+	}
+
+	@Override
+	public Set<Authority> getAuthoritiesByUser(Long userId) {
+		Assert.notNull(userId);
+		
+		User user = userDao.findById(userId);
+		if(user == null){
+			VotingSystemException.throwEntityNotFound(User.class);
+		}
+		
+		// get user authorities
+		return dao.loadAuthoritiesByUserId(userId);
 	}
 
 }

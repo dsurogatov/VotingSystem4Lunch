@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.dsu.dao.api.CrudDao;
-import org.dsu.dao.user.UserDao;
+import org.dsu.dao.user.UserDAO;
 import org.dsu.domain.model.User;
+import org.dsu.dto.converter.ConverterUtils;
 import org.dsu.dto.model.UserDTO;
 import org.dsu.json.PageJson;
 import org.dsu.service.api.AbstractNamedService;
@@ -21,7 +22,7 @@ import org.springframework.util.Assert;
 public class UserServiceImpl extends AbstractNamedService<UserDTO, User> implements UserService {
 	
 	@Autowired
-	private UserDao dao;
+	private UserDAO dao;
 
 	@Override
 	protected CrudDao<User> getDao() {
@@ -88,6 +89,18 @@ public class UserServiceImpl extends AbstractNamedService<UserDTO, User> impleme
 		}
 
 		return userDTO;
+	}
+
+	@Override
+	public UserDTO getUserByLogin(String login) {
+		Assert.hasText(login);
+		
+		User user = dao.findUserByLogin(login);
+		if(user == null) {
+			return null;
+		}
+		
+		return ConverterUtils.toDTO(user);
 	}
 
 }

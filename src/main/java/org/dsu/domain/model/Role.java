@@ -1,6 +1,15 @@
 package org.dsu.domain.model;
 
+import java.util.Set;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import org.dsu.domain.api.AbstractNamedEntity;
@@ -9,13 +18,23 @@ import org.dsu.domain.api.AbstractNamedEntity;
 @Table(name="t_role")
 public class Role extends AbstractNamedEntity {
 
-	private boolean admin;
+	@ElementCollection(targetClass = Authority.class, fetch = FetchType.EAGER)
+	@CollectionTable(
+	        name = "role_authority", 
+	        joinColumns = @JoinColumn(name = "role_id")
+	)
+    @Column(name = "authority", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Set<Authority> authorities;
 
-	public boolean isAdmin() {
-		return admin;
+	/** Get roles authorites
+	 * @return - the set of authorites
+	 */
+	public Set<Authority> getAuthorities() {
+		return authorities;
 	}
 
-	public void setAdmin(boolean admin) {
-		this.admin = admin;
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
 	}
 }

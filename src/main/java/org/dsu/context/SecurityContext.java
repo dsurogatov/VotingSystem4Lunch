@@ -44,7 +44,7 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
         .authenticationEntryPoint(restAuthenticationEntryPoint)
         .and()
         .authorizeRequests()
-        .antMatchers("/api/v1/**").hasRole("USER")
+        .antMatchers("/api/v1/**").hasRole("LOGIN")
 //        .antMatchers("/api/v1/**").authenticated()
         .and()
         .formLogin()

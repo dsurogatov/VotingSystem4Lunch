@@ -80,7 +80,8 @@ var changeView = function(typeView) {
             reqObj = {
                 id : null,
                 name : 'a',
-                admin : false
+                admin : false,
+                login : false
             };
         } else if (typeView == 'createRoleUser' || typeView == 'deleteRoleUser') {
             reqObj = {
@@ -89,8 +90,8 @@ var changeView = function(typeView) {
             };
         } else if (typeView == 'login') {
             reqObj = {
-                username : 'user1',
-                password : 'user2',
+                username : 'admin#',
+                password : '#u2',
             };
         }
 
@@ -111,7 +112,8 @@ var changeView = function(typeView) {
             reqObj = {
                 id : 1,
                 name : 'a',
-                admin : false
+                admin : false,
+                login : false
             };
         }
 

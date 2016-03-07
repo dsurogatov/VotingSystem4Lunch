@@ -4,6 +4,7 @@ import org.dsu.dto.api.BaseNamedDTO;
 
 public class RoleDTO extends BaseNamedDTO {
 
+	boolean login;
 	boolean admin;
 
 	public boolean isAdmin() {
@@ -12,5 +13,13 @@ public class RoleDTO extends BaseNamedDTO {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+
+	public boolean isLogin() {
+		return login;
+	}
+
+	public void setLogin(boolean login) {
+		this.login = login;
 	}
 }

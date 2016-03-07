@@ -1,7 +1,9 @@
 package org.dsu.dao.role;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Query;
 
@@ -9,14 +11,14 @@ import org.apache.commons.lang.StringUtils;
 import org.dsu.dao.api.AbstractNamedDao;
 import org.dsu.dao.api.PageProp;
 import org.dsu.dao.api.SortProp;
+import org.dsu.domain.model.Authority;
 import org.dsu.domain.model.Role;
 import org.dsu.domain.model.User_Role;
 import org.dsu.domain.model.User_RoleId;
-import org.dsu.dto.model.RoleDTO;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RoleDaoImpl extends AbstractNamedDao<Role> implements RoleDao {
+public class RoleDAOImpl extends AbstractNamedDao<Role> implements RoleDAO {
 
 	@Override
 	public void deleteRelations(Long id) {
@@ -29,7 +31,7 @@ public class RoleDaoImpl extends AbstractNamedDao<Role> implements RoleDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<RoleDTO> findByUserId(Long idUser, PageProp page, SortProp sort) {
+	public List<Role> findByUserId(Long idUser, PageProp page, SortProp sort) {
 		if (page == null || page.getFirstResult() < 0 || page.getMaxResult() < 0) {
 			return new ArrayList<>();
 		}
@@ -67,5 +69,18 @@ public class RoleDaoImpl extends AbstractNamedDao<Role> implements RoleDao {
 			return;
 		}
 		entityManager.remove(userRole);
+	}
+
+	@Override
+	public Set<Authority> loadAuthoritiesByUserId(Long idUser) {
+		String hqlQuery = "SELECT ur.id.role FROM User_Role ur WHERE ur.id.user.id = :idUser";
+		@SuppressWarnings("unchecked")
+		List<Role> userRoles = entityManager.createQuery(hqlQuery).setParameter("idUser", idUser).getResultList();
+		
+		Set<Authority> retAuthorities = new HashSet<>();
+		for(Role role : userRoles) {
+			retAuthorities.addAll(role.getAuthorities());
+		}
+		return retAuthorities;
 	}
 }
