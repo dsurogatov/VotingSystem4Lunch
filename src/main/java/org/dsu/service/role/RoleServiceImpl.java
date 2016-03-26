@@ -16,7 +16,7 @@ import org.dsu.domain.model.User_Role;
 import org.dsu.domain.model.User_RoleId;
 import org.dsu.dto.converter.ConverterUtils;
 import org.dsu.dto.model.RoleDTO;
-import org.dsu.json.PageJson;
+import org.dsu.json.PageJSON;
 import org.dsu.service.api.AbstractNamedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class RoleServiceImpl extends AbstractNamedService<RoleDTO, Role> impleme
 	}
 
 	@Override
-	public List<RoleDTO> findByUser(Long user_id, PageJson page) {
+	public List<RoleDTO> findByUser(Long user_id, PageJSON page) {
 		Assert.notNull(user_id);
 		
 		if(userDao.findById(user_id) == null){

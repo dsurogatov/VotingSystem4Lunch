@@ -47,7 +47,7 @@ var changeView = function(typeView) {
     txtBigResponse.val('');
     pCnt.text('');
 
-    if (typeView == 'getByPage' || typeView == 'getByPageRoles') {
+    if (typeView == 'getByPage' || typeView == 'getByPageRoles' || typeView == 'getByPageRestaurants') {
         var page = {
             start : 0,
             size : 10,
@@ -61,13 +61,14 @@ var changeView = function(typeView) {
         txtBigRequest.show();
         pCnt.show();
         txtSmallRequest.hide();
-    } else if (typeView == 'getUser' || typeView == 'getRole' || typeView == 'getByUserRoles') {
+    } else if (typeView == 'getUser' || typeView == 'getRole' || typeView == 'getByUserRoles' || typeView == 'getRestaurant') {
         pnlBigRequest.show();
         txtBigRequest.hide();
         pCnt.hide();
         txtSmallRequest.show();
     } else if (typeView == 'login' || 
-            typeView == 'createUser' || typeView == 'createRole' || typeView == 'createRoleUser' || typeView == 'deleteRoleUser') {
+            typeView == 'createUser' || typeView == 'createRole' || typeView == 'createRoleUser' || typeView == 'deleteRoleUser'
+                || typeView == 'createRestaurant') {
         var reqObj = {
             id : null,
             name : 'a',
@@ -90,9 +91,14 @@ var changeView = function(typeView) {
             };
         } else if (typeView == 'login') {
             reqObj = {
-                username : 'admin#',
-                password : '#u2',
+                    username : 'admin#',
+                    password : '#u2',
             };
+        } else if (typeView == 'createRestaurant') {
+            reqObj = {
+                    id : null,
+                    name : 'a'
+                };
         }
 
         txtBigRequest.val(JSON.stringify(reqObj, null, '  '));
@@ -101,7 +107,7 @@ var changeView = function(typeView) {
         txtBigRequest.show();
         pCnt.hide();
         txtSmallRequest.hide();
-    } else if (typeView == 'updateUser' || typeView == 'updateRole') {
+    } else if (typeView == 'updateUser' || typeView == 'updateRole' || typeView == 'updateRestaurant') {
         var reqObj = {
             id : 6,
             name : 'a6',
@@ -115,7 +121,12 @@ var changeView = function(typeView) {
                 admin : false,
                 login : false
             };
-        }
+        } else  if (typeView == 'updateRestaurant') {
+            reqObj = {
+                    id : 1,
+                    name : 'a2'
+                };
+            }
 
         txtBigRequest.val(JSON.stringify(reqObj, null, '  '));
 
@@ -123,7 +134,7 @@ var changeView = function(typeView) {
         txtBigRequest.show();
         pCnt.hide();
         txtSmallRequest.hide();
-    } else if (typeView == 'deleteUser' || typeView == 'deleteRole') {
+    } else if (typeView == 'deleteUser' || typeView == 'deleteRole' || typeView == 'deleteRestaurant') {
         pnlBigRequest.show();
         txtBigRequest.hide();
         pCnt.hide();
@@ -198,7 +209,7 @@ var delet2 = function(url, data, succF) {
 $('#btnGo').click(function(e) {
     console.log('selected action is', currentAction);
 
-    if (currentAction == 'getByPage' || currentAction == 'getByPageRoles') {
+    if (currentAction == 'getByPage' || currentAction == 'getByPageRoles' || currentAction == 'getByPageRestaurants') {
         console.log('request is', txtBigRequest.val());
 
         // set urls
@@ -207,6 +218,9 @@ $('#btnGo').click(function(e) {
         if (currentAction == 'getByPageRoles') {
             url = contextName + '/api/v1/role';
             countUrl = contextName + '/api/v1/role/count';
+        } else if (currentAction == 'getByPageRestaurants') {
+            url = contextName + '/api/v1/restaurant';
+            countUrl = contextName + '/api/v1/restaurant/count';
         }
 
         var page = JSON.parse(txtBigRequest.val());
@@ -228,7 +242,7 @@ $('#btnGo').click(function(e) {
         $.getJSON(countUrl, function(data) {
             pCnt.text(JSON.stringify(data, null, '  '));
         });
-    } else if (currentAction == 'getUser' || currentAction == 'getRole' || currentAction == 'getByUserRoles') {
+    } else if (currentAction == 'getUser' || currentAction == 'getRole' || currentAction == 'getByUserRoles' || currentAction == 'getRestaurant') {
         console.log('request is', txtSmallRequest.val());
 
         var url = contextName + '/api/v1/user/id/' + txtSmallRequest.val();
@@ -236,6 +250,8 @@ $('#btnGo').click(function(e) {
             url = contextName + '/api/v1/role/id/' + txtSmallRequest.val();
         } else if (currentAction == 'getByUserRoles') {
             url = contextName + '/api/v1/role/user/' + txtSmallRequest.val();
+        } else if (currentAction == 'getRestaurant') {
+            url = contextName + '/api/v1/restaurant/id/' + txtSmallRequest.val();
         }
 
         $.getJSON(url, function(data) {
@@ -245,13 +261,16 @@ $('#btnGo').click(function(e) {
                 showNoAuth(true);
             }
         });
-    } else if (currentAction == 'createUser' || currentAction == 'createRole' || currentAction == 'createRoleUser') {
+    } else if (currentAction == 'createUser' || currentAction == 'createRole' || currentAction == 'createRoleUser'
+                || currentAction == 'createRestaurant') {
         console.log('request is', JSON.parse(txtBigRequest.val()));
         var url = contextName + '/api/v1/user';
         if (currentAction == 'createRole') {
             url = contextName + '/api/v1/role';
         } else if (currentAction == 'createRoleUser') {
             url = contextName + '/api/v1/role/user';
+        } else if (currentAction == 'createRestaurant') {
+            url = contextName + '/api/v1/restaurant';
         }
 
         post(url, txtBigRequest.val(), function(data) {
@@ -265,24 +284,28 @@ $('#btnGo').click(function(e) {
         delet2(contextName + url, txtBigRequest.val(), function(data) {
             txtBigResponse.val('nice');
         });
-    } else if (currentAction == 'updateUser' || currentAction == 'updateRole') {
+    } else if (currentAction == 'updateUser' || currentAction == 'updateRole' || currentAction == 'updateRestaurant') {
         console.log('request is', JSON.parse(txtBigRequest.val()));
 
         var url = contextName + '/api/v1/user';
         if (currentAction == 'updateRole') {
             url = contextName + '/api/v1/role';
+        } else if (currentAction == 'updateRestaurant') {
+            url = contextName + '/api/v1/restaurant';
         }
 
         put(url, txtBigRequest.val(), function(data) {
             txtBigResponse.val(JSON.stringify(data, null, '  '));
             console.log('nice update');
         });
-    } else if (currentAction == 'deleteUser' || currentAction == 'deleteRole') {
+    } else if (currentAction == 'deleteUser' || currentAction == 'deleteRole' || currentAction == 'deleteRestaurant') {
         console.log('delete id is', txtSmallRequest.val());
 
         var url = '/api/v1/user/';
         if (currentAction == 'deleteRole') {
             url = '/api/v1/role/';
+        } else if (currentAction == 'deleteRestaurant') {
+            url = '/api/v1/restaurant/';
         }
 
         delet(contextName + url + txtSmallRequest.val(), function(data) {

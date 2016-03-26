@@ -10,7 +10,7 @@ import org.dsu.dao.api.SortProp;
 import org.dsu.domain.api.IdEntity;
 import org.dsu.dto.api.IdDTO;
 import org.dsu.dto.converter.ConverterUtils;
-import org.dsu.json.PageJson;
+import org.dsu.json.PageJSON;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
@@ -31,7 +31,7 @@ public abstract class AbstractCrudService<I extends IdDTO, E extends IdEntity> i
 	}
 
 	@Override
-	public List<I> findByPage(PageJson page) {
+	public List<I> findByPage(PageJSON page) {
 		Assert.notNull(page);
 		
 		return ConverterUtils.toDTOList(getDao().findByPage(

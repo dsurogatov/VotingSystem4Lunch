@@ -44,6 +44,8 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
         .authenticationEntryPoint(restAuthenticationEntryPoint)
         .and()
         .authorizeRequests()
+        .antMatchers("/api/v1/user/**").hasRole("ADMIN")
+        .antMatchers("/api/v1/role/**").hasRole("ADMIN")
         .antMatchers("/api/v1/**").hasRole("LOGIN")
 //        .antMatchers("/api/v1/**").authenticated()
         .and()
@@ -53,43 +55,6 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
         .and()
         .logout();//.deleteCookies("JSESSIONID").invalidateHttpSession(true);
     	
-    	/*
-    	// включаем защиту от CSRF атак
-        http.csrf().disable()
-        //http
-                // указываем правила запросов
-                // по которым будет определятся доступ к ресурсам и остальным данным
-                .authorizeRequests()
-                //.antMatchers("/resources/**", "/**").permitAll()
-                .antMatchers("/api/v1/**").hasRole("USER")
-                .antMatchers("/forbi**").access("hasRole('ROLE_ADMIN')")
-                //.anyRequest().permitAll()
-                .and();
- 
-        http.formLogin()
-                // указываем страницу с формой логина
-                .loginPage("/login")
-                // указываем action с формы логина
-                .loginProcessingUrl("/j_spring_security_check")
-                // указываем URL при неудачном логине
-                .failureUrl("/login?error")
-                // Указываем параметры логина и пароля с формы логина
-                .usernameParameter("j_username")
-                .passwordParameter("j_password")
-                // даем доступ к форме логина всем
-                .permitAll();
- 
-        http.logout()
-                // разрешаем делать логаут всем
-                .permitAll()
-                // указываем URL логаута
-                .logoutUrl("/logout")
-                // указываем URL при удачном логауте
-                .logoutSuccessUrl("/login?logout")
-                // делаем не валидной текущую сессию
-                .invalidateHttpSession(true);
-                */
- 
     }
  
     // Указываем Spring контейнеру, что надо инициализировать <b></b>ShaPasswordEncoder

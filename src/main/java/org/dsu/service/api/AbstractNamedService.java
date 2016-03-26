@@ -8,7 +8,7 @@ import org.dsu.dao.api.SortProp;
 import org.dsu.domain.api.NamedEntity;
 import org.dsu.dto.api.BaseNamedDTO;
 import org.dsu.dto.converter.ConverterUtils;
-import org.dsu.json.PageJson;
+import org.dsu.json.PageJSON;
 import org.springframework.util.Assert;
 
 public abstract class AbstractNamedService<I extends BaseNamedDTO, E extends NamedEntity> extends AbstractCrudService<I, E> implements NamedService<I> {
@@ -18,7 +18,7 @@ public abstract class AbstractNamedService<I extends BaseNamedDTO, E extends Nam
 	}
 	
 	@Override
-	public List<I> findByPage(PageJson page) {
+	public List<I> findByPage(PageJSON page) {
 		Assert.notNull(page);
 		
 		return ConverterUtils.toDTOList(getNamedDao().findByPage(

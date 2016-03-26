@@ -3,7 +3,7 @@ package org.dsu.json;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 
-public class PageJson {
+public class PageJSON {
 
 	private int start;
 	@Max(100)

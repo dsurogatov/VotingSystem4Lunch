@@ -1,10 +1,10 @@
 package org.dsu.json;
 
-public class CountJson {
+public class CountJSON {
 
 	private long count;
 	
-	public CountJson(long count) {
+	public CountJSON(long count) {
 		this.count = count;
 	}
 

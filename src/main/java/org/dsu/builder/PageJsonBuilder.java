@@ -1,6 +1,6 @@
 package org.dsu.builder;
 
-import org.dsu.json.PageJson;
+import org.dsu.json.PageJSON;
 
 public class PageJsonBuilder {
 
@@ -35,8 +35,8 @@ public class PageJsonBuilder {
 		return this;
 	}
 	
-	public PageJson build() {
-		PageJson page = new PageJson();
+	public PageJSON build() {
+		PageJSON page = new PageJSON();
 		page.setStart(start);
 		page.setSize(size);
 		page.setFindingValue(findingValue);

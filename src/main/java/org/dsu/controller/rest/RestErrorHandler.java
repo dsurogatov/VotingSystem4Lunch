@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import org.dsu.common.ExceptionType;
 import org.dsu.common.VotingSystemException;
-import org.dsu.json.ValidationErrorJson;
+import org.dsu.json.ValidationErrorJSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,15 +54,15 @@ public class RestErrorHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ValidationErrorJson processValidationError(MethodArgumentNotValidException ex) {
+    public ValidationErrorJSON processValidationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
  
         return processFieldErrors(fieldErrors);
     }
  
-    private ValidationErrorJson processFieldErrors(List<FieldError> fieldErrors) {
-        ValidationErrorJson dto = new ValidationErrorJson();
+    private ValidationErrorJSON processFieldErrors(List<FieldError> fieldErrors) {
+        ValidationErrorJSON dto = new ValidationErrorJSON();
  
         for (FieldError fieldError: fieldErrors) {
             String localizedErrorMessage = resolveLocalizedErrorMessage(fieldError);

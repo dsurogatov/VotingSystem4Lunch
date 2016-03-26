@@ -11,9 +11,11 @@ import java.util.Map;
 import org.dsu.common.ExceptionType;
 import org.dsu.common.VotingSystemException;
 import org.dsu.domain.api.IdEntity;
+import org.dsu.domain.model.Restaurant;
 import org.dsu.domain.model.Role;
 import org.dsu.domain.model.User;
 import org.dsu.dto.api.IdDTO;
+import org.dsu.dto.model.RestaurantDTO;
 import org.dsu.dto.model.RoleDTO;
 import org.dsu.dto.model.UserDTO;
 
@@ -34,6 +36,10 @@ public class ConverterUtils {
 		RoleConverter roleConverter = new RoleConverter();
 		dtoCoverters.put(RoleDTO.class, roleConverter);
 		entityCoverters.put(Role.class, roleConverter);
+
+		RestaurantConverter restaurantConverter = new RestaurantConverter();
+		dtoCoverters.put(RestaurantDTO.class, restaurantConverter);
+		entityCoverters.put(Restaurant.class, restaurantConverter);
 	}
 
 	/** Convert entity to dto

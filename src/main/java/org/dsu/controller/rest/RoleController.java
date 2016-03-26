@@ -5,8 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.dsu.dto.model.RoleDTO;
-import org.dsu.json.CountJson;
-import org.dsu.json.PageJson;
+import org.dsu.json.CountJSON;
+import org.dsu.json.PageJSON;
 import org.dsu.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -24,7 +24,7 @@ public class RoleController {
 	private RoleService roleService;
 
 	@RequestMapping(value = {"/api/v1/role"}, method = RequestMethod.GET)
-	public List<RoleDTO> getRoles(@Valid PageJson page, BindingResult result) throws MethodArgumentNotValidException {
+	public List<RoleDTO> getRoles(@Valid PageJSON page, BindingResult result) throws MethodArgumentNotValidException {
 		if(result.hasErrors()) {
 			throw new MethodArgumentNotValidException(null, result);
 		}
@@ -33,15 +33,15 @@ public class RoleController {
 	}
 	
 	@RequestMapping(value = {"/api/v1/role/count"}, method = RequestMethod.GET)
-    public CountJson getRolesCnt() {
+    public CountJSON getRolesCnt() {
 		
-		return new CountJson(roleService.count());
+		return new CountJSON(roleService.count());
 	}
 	
 	@RequestMapping(value = {"/api/v1/role/count/{findingValue}"}, method = RequestMethod.GET)
-    public CountJson getRolesCntByName(@PathVariable("findingValue") String findingValue) {
+    public CountJSON getRolesCntByName(@PathVariable("findingValue") String findingValue) {
 		
-		return new CountJson(roleService.countByName(findingValue));
+		return new CountJSON(roleService.countByName(findingValue));
 	}
 	
 	@RequestMapping(value = {"/api/v1/role/id/{id}"}, method = RequestMethod.GET)

@@ -5,8 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.dsu.dto.model.UserDTO;
-import org.dsu.json.CountJson;
-import org.dsu.json.PageJson;
+import org.dsu.json.CountJSON;
+import org.dsu.json.PageJSON;
 import org.dsu.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping(value = {"/api/v1/user"}, method = RequestMethod.GET)
-	public List<UserDTO> getUsers(@Valid PageJson page, BindingResult result) throws MethodArgumentNotValidException {
+	public List<UserDTO> getUsers(@Valid PageJSON page, BindingResult result) throws MethodArgumentNotValidException {
 		LOGGER.debug("The page is - " + page);
 		// странно, просто аннотация валид не бросает это исключение, но 400 код возвращает
 		if(result.hasErrors()) {
@@ -39,15 +39,15 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = {"/api/v1/user/count"}, method = RequestMethod.GET)
-    public CountJson getUsersCnt() {
+    public CountJSON getUsersCnt() {
 		
-		return new CountJson(userService.count());
+		return new CountJSON(userService.count());
 	}
 	
 	@RequestMapping(value = {"/api/v1/user/count/{findingValue}"}, method = RequestMethod.GET)
-    public CountJson getUsersCntByName(@PathVariable("findingValue") String findingValue) {
+    public CountJSON getUsersCntByName(@PathVariable("findingValue") String findingValue) {
 		
-		return new CountJson(userService.countByName(findingValue));
+		return new CountJSON(userService.countByName(findingValue));
 	}
 	
 	@RequestMapping(value = {"/api/v1/user/id/{id}"}, method = RequestMethod.GET)

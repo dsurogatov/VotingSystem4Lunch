@@ -7,12 +7,12 @@ package org.dsu.json;
  * @author nescafe
  * Object for save validation error message
  */
-public class FieldErrorJson {
+public class FieldErrorJSON {
 
 	private final String field;
     private final String message;
  
-    public FieldErrorJson(String field, String message) {
+    public FieldErrorJSON(String field, String message) {
         this.field = field;
         this.message = message;
     }

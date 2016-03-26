@@ -8,7 +8,7 @@ import org.dsu.dao.user.UserDAO;
 import org.dsu.domain.model.User;
 import org.dsu.dto.converter.ConverterUtils;
 import org.dsu.dto.model.UserDTO;
-import org.dsu.json.PageJson;
+import org.dsu.json.PageJSON;
 import org.dsu.service.api.AbstractNamedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -70,7 +70,7 @@ public class UserServiceImpl extends AbstractNamedService<UserDTO, User> impleme
 	}
 	
 	@Override
-	public List<UserDTO> findByPage(PageJson page) {
+	public List<UserDTO> findByPage(PageJSON page) {
 		List<UserDTO> userDTOList = super.findByPage(page);
 		
 		// clean password field

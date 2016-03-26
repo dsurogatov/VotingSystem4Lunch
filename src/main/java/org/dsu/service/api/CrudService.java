@@ -5,7 +5,7 @@ package org.dsu.service.api;
 
 import java.util.List;
 
-import org.dsu.json.PageJson;
+import org.dsu.json.PageJSON;
 
 /**
  * @author nescafe
@@ -14,7 +14,7 @@ import org.dsu.json.PageJson;
 public interface CrudService<I> {
 
 	I findById(Long id);
-    List<I> findByPage(PageJson page);
+    List<I> findByPage(PageJSON page);
     long count();
     I create(I instance);
     I update(I instance);

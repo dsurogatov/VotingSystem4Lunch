@@ -1,6 +1,6 @@
 package org.dsu.json;
 
-public class RelationJson {
+public class RelationJSON {
 
 	private Long userId;
 	private Long roleId;
