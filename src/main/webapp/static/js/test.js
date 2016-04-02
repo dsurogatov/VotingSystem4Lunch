@@ -134,7 +134,8 @@ var changeView = function(typeView) {
         txtBigRequest.show();
         pCnt.hide();
         txtSmallRequest.hide();
-    } else if (typeView == 'deleteUser' || typeView == 'deleteRole' || typeView == 'deleteRestaurant') {
+    } else if (typeView == 'deleteUser' || typeView == 'deleteRole' || typeView == 'deleteRestaurant'
+                || typeView == 'getDishes') {
         pnlBigRequest.show();
         txtBigRequest.hide();
         pCnt.hide();
@@ -310,6 +311,14 @@ $('#btnGo').click(function(e) {
 
         delet(contextName + url + txtSmallRequest.val(), function(data) {
             txtBigResponse.val('nice');
+        });
+    } else if (currentAction == 'getDishes') {
+        var url = '/api/v1/menu/restaurant-';
+        $.get(contextName + url + txtSmallRequest.val(), function(data) {
+            data.dates = moment(data.date).format("YYYY-MM-DD HH:mm");
+            //data.dates1 = new Date(data.date).toString();
+            txtBigResponse.val(JSON.stringify(data, null, '  '));
+            showNoAuth(false);
         });
     } else if (currentAction == 'login') {
         console.log('request is', JSON.parse(txtBigRequest.val()));

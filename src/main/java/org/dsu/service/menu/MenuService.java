@@ -1,10 +1,10 @@
 package org.dsu.service.menu;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.dsu.json.MenuJSON;
 
 public interface MenuService {
 
-	MenuJSON getMenyByRestaurantId(Long restaurantId, Date menuDate);
+	MenuJSON getMenyByRestaurantId(Long restaurantId, LocalDate menuDate);
 }

@@ -1,7 +1,8 @@
 package org.dsu.controller.rest;
 
-import java.util.Date;
+import java.time.LocalDate;
 
+import org.dsu.common.ThreadLocalDateFormat;
 import org.dsu.json.MenuJSON;
 import org.dsu.service.menu.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,19 @@ public class MenuController {
 	@Autowired
 	private MenuService menuService;
 
+	// date format is yyyy-MM-dd
 	@RequestMapping(value = {"/api/v1/menu/restaurant-{id}/{date}"}, method = RequestMethod.GET)
-    public MenuJSON getMenyByRestaurantId(@PathVariable("id") Long id, @PathVariable("date") Date date) {
-		
-		return menuService.getMenyByRestaurantId(id, date);
+    public MenuJSON getMenyByRestaurantId(@PathVariable("id") Long id, @PathVariable("date") String date) {
+		// convert to date
+		LocalDate localDate = ThreadLocalDateFormat.threadSafeFormat2Date(date);
+		return menuService.getMenyByRestaurantId(id, localDate);
 	}
 	
 	@RequestMapping(value = {"/api/v1/menu/restaurant-{id}"}, method = RequestMethod.GET)
     public MenuJSON getMenyByRestaurantId(@PathVariable("id") Long id) {
 		
 		// московская дата!
-		Date date = new Date();
+		LocalDate date = LocalDate.now();
 		return menuService.getMenyByRestaurantId(id, date);
 	}
 	
