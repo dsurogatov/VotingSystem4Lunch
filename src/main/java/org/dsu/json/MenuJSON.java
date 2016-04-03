@@ -10,7 +10,8 @@ public class MenuJSON {
 
 	private BaseNamedDTO resturantRef;
 	private Date date;
-	private List<DishJSON> dishes;
+	private List<DishJSON> dishes = new ArrayList<>();
+	private List<Long> changedDishesIds = new ArrayList<>();
 	private boolean editable;
 
 	public BaseNamedDTO getResturantRef() {
@@ -32,6 +33,10 @@ public class MenuJSON {
 	public List<DishJSON> getDishes() {
 		return new ArrayList<>(dishes);
 	}
+	
+	public int getDishesCount() {
+		return dishes.size();
+	}
 
 	public void setDishes(List<DishJSON> dishes) {
 		this.dishes = new ArrayList<>(dishes);
@@ -44,4 +49,13 @@ public class MenuJSON {
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
+
+	public List<Long> getChangedDishesIds() {
+		return changedDishesIds;
+	}
+
+	public void setChangedDishesIds(List<Long> changedDishesIds) {
+		this.changedDishesIds = changedDishesIds;
+	}
+
 }

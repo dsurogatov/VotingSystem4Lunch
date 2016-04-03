@@ -2,11 +2,14 @@ package org.dsu.controller.rest;
 
 import java.time.LocalDate;
 
+import javax.validation.Valid;
+
 import org.dsu.common.ThreadLocalDateFormat;
 import org.dsu.json.MenuJSON;
 import org.dsu.service.menu.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +34,17 @@ public class MenuController {
 		// московская дата!
 		LocalDate date = LocalDate.now();
 		return menuService.getMenyByRestaurantId(id, date);
+	}
+	
+	@RequestMapping(value = "/api/v1/user", method = RequestMethod.POST)
+    public MenuJSON saveMenu(@Valid @RequestBody MenuJSON dto) {
+		MenuJSON saved = menuService.updateMenu(dto);
+        return saved;
+    }
+	
+	@RequestMapping(value = {"/api/v1/dish/{id}"}, method = RequestMethod.DELETE)
+    public void deleteDish(@PathVariable("id") Long id) {
+		menuService.deleteDish(id);
 	}
 	
 }

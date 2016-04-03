@@ -1,6 +1,5 @@
 package org.dsu.dao.dish;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,6 +10,7 @@ import org.dsu.common.ExceptionType;
 import org.dsu.common.VotingSystemException;
 import org.dsu.dao.api.AbstractNamedDao;
 import org.dsu.domain.model.Dish;
+import org.dsu.domain.model.MenuItem;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -27,17 +27,17 @@ public class DishDAOImpl extends AbstractNamedDao<Dish> implements DishDAO {
 	}
 
 	@Override
-	public BigDecimal getPriceByDishAndDate(Dish dish, LocalDate date) {
+	public MenuItem getMenuItemByDishAndDate(Dish dish, LocalDate date) {
 		Assert.notNull(dish);
 		Assert.notNull(dish.getId());
 		Assert.notNull(date);
 		
 		// TODO check time zones
-		String qlQuery = "SELECT o.price FROM MenuItem o WHERE o.dish.id = :dish_id AND o.date = :date ";
+		String qlQuery = "SELECT o FROM MenuItem o WHERE o.dish.id = :dish_id AND o.date = :date ";
 		Query query = entityManager.createQuery(qlQuery);
 		query.setParameter(0, dish.getId()).setParameter(1, DateUtils.asDate(date));
 		@SuppressWarnings("unchecked")
-		List<BigDecimal> prices = query.getResultList();
+		List<MenuItem> prices = query.getResultList();
 		
 		if(prices.isEmpty()) {
 			return null;
