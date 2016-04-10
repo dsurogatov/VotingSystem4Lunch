@@ -19,10 +19,10 @@ $('div.input-group-btn ul.dropdown-menu li a').click(function(e) {
 });
 
 var currentAction;
-//var contextName = '/VotingSystem4Lunch';
+// var contextName = '/VotingSystem4Lunch';
 var contextName = getContextPath();
 function getContextPath() {
-    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+    return window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
 }
 
 var pnlBigRequest = $('#pnlBigRequest');
@@ -33,7 +33,7 @@ var pCnt = $('#pCnt');
 var pNoAuth = $('#pNoAuth');
 
 var showNoAuth = function(show) {
-    if(show) {
+    if (show) {
         pNoAuth.show();
     } else {
         pNoAuth.hide();
@@ -66,9 +66,8 @@ var changeView = function(typeView) {
         txtBigRequest.hide();
         pCnt.hide();
         txtSmallRequest.show();
-    } else if (typeView == 'login' || 
-            typeView == 'createUser' || typeView == 'createRole' || typeView == 'createRoleUser' || typeView == 'deleteRoleUser'
-                || typeView == 'createRestaurant') {
+    } else if (typeView == 'login' || typeView == 'createUser' || typeView == 'createRole' || typeView == 'createRoleUser' || typeView == 'deleteRoleUser'
+            || typeView == 'createRestaurant') {
         var reqObj = {
             id : null,
             name : 'a',
@@ -91,14 +90,14 @@ var changeView = function(typeView) {
             };
         } else if (typeView == 'login') {
             reqObj = {
-                    username : 'admin#',
-                    password : '#u2',
+                username : 'admin#',
+                password : '#u2',
             };
         } else if (typeView == 'createRestaurant') {
             reqObj = {
-                    id : null,
-                    name : 'a'
-                };
+                id : null,
+                name : 'a'
+            };
         }
 
         txtBigRequest.val(JSON.stringify(reqObj, null, '  '));
@@ -107,7 +106,7 @@ var changeView = function(typeView) {
         txtBigRequest.show();
         pCnt.hide();
         txtSmallRequest.hide();
-    } else if (typeView == 'updateUser' || typeView == 'updateRole' || typeView == 'updateRestaurant') {
+    } else if (typeView == 'updateUser' || typeView == 'updateRole' || typeView == 'updateRestaurant' || typeView == 'updateDishes') {
         var reqObj = {
             id : 6,
             name : 'a6',
@@ -121,12 +120,28 @@ var changeView = function(typeView) {
                 admin : false,
                 login : false
             };
-        } else  if (typeView == 'updateRestaurant') {
+        } else if (typeView == 'updateRestaurant') {
             reqObj = {
-                    id : 1,
-                    name : 'a2'
-                };
-            }
+                id : 1,
+                name : 'a2'
+            };
+        } else if (typeView == 'updateDishes') {
+            reqObj = {
+                "resturantRef" : {
+                    "id" : 5,
+                    "name" : "a"
+                },
+                "date" : 1459458000000,
+                "dishes" : [ {
+                    //id : 1,
+                    name : 'a2',
+                    price : 10.23    
+                } ],
+                "changedDishesIds" : [],
+                "editable" : true,
+                "dates" : "2016-04-01 00:00"
+            };
+        }
 
         txtBigRequest.val(JSON.stringify(reqObj, null, '  '));
 
@@ -134,8 +149,7 @@ var changeView = function(typeView) {
         txtBigRequest.show();
         pCnt.hide();
         txtSmallRequest.hide();
-    } else if (typeView == 'deleteUser' || typeView == 'deleteRole' || typeView == 'deleteRestaurant'
-                || typeView == 'getDishes') {
+    } else if (typeView == 'deleteUser' || typeView == 'deleteRole' || typeView == 'deleteRestaurant' || typeView == 'getDishes') {
         pnlBigRequest.show();
         txtBigRequest.hide();
         pCnt.hide();
@@ -161,7 +175,7 @@ var post = function(url, data, succF) {
         contentType : "application/json",
         success : succF
     }).fail(function(xhr) {
-        if(xhr.status == 401) {
+        if (xhr.status == 401) {
             showNoAuth(true);
         }
     });
@@ -175,7 +189,7 @@ var put = function(url, data, succF) {
         contentType : "application/json",
         success : succF
     }).fail(function(xhr) {
-        if(xhr.status == 401) {
+        if (xhr.status == 401) {
             showNoAuth(true);
         }
     });
@@ -186,7 +200,7 @@ var delet = function(url, succF) {
         type : "delete",
         success : succF
     }).fail(function(xhr) {
-        if(xhr.status == 401) {
+        if (xhr.status == 401) {
             showNoAuth(true);
         }
     });
@@ -200,7 +214,7 @@ var delet2 = function(url, data, succF) {
         contentType : "application/json",
         success : succF
     }).fail(function(xhr) {
-        if(xhr.status == 401) {
+        if (xhr.status == 401) {
             showNoAuth(true);
         }
     });
@@ -231,7 +245,7 @@ $('#btnGo').click(function(e) {
         $.getJSON(url, page, function(data) {
             txtBigResponse.val(JSON.stringify(data, null, '  '));
         }).fail(function(xhr) {
-            if(xhr.status == 401) {
+            if (xhr.status == 401) {
                 showNoAuth(true);
             }
         });
@@ -258,12 +272,12 @@ $('#btnGo').click(function(e) {
         $.getJSON(url, function(data) {
             txtBigResponse.val(JSON.stringify(data, null, '  '));
         }).fail(function(xhr) {
-            if(xhr.status == 401) {
+            if (xhr.status == 401) {
                 showNoAuth(true);
             }
         });
-    } else if (currentAction == 'createUser' || currentAction == 'createRole' || currentAction == 'createRoleUser'
-                || currentAction == 'createRestaurant') {
+    } else if (currentAction == 'createUser' || currentAction == 'createRole' || currentAction == 'createRoleUser' || currentAction == 'createRestaurant'
+        || currentAction == 'updateDishes') {
         console.log('request is', JSON.parse(txtBigRequest.val()));
         var url = contextName + '/api/v1/user';
         if (currentAction == 'createRole') {
@@ -272,9 +286,14 @@ $('#btnGo').click(function(e) {
             url = contextName + '/api/v1/role/user';
         } else if (currentAction == 'createRestaurant') {
             url = contextName + '/api/v1/restaurant';
+        } else if (currentAction == 'updateDishes') {
+            url = contextName + '/api/v1/menu';
         }
 
         post(url, txtBigRequest.val(), function(data) {
+            if (currentAction == 'updateDishes' ) {
+                data.dates = moment(data.date).format("YYYY-MM-DD HH:mm");
+            }
             txtBigResponse.val(JSON.stringify(data, null, '  '));
             console.log('nice');
         });
@@ -316,14 +335,14 @@ $('#btnGo').click(function(e) {
         var url = '/api/v1/menu/restaurant-';
         $.get(contextName + url + txtSmallRequest.val(), function(data) {
             data.dates = moment(data.date).format("YYYY-MM-DD HH:mm");
-            //data.dates1 = new Date(data.date).toString();
+            // data.dates1 = new Date(data.date).toString();
             txtBigResponse.val(JSON.stringify(data, null, '  '));
             showNoAuth(false);
         });
     } else if (currentAction == 'login') {
         console.log('request is', JSON.parse(txtBigRequest.val()));
         var url = '/login';
-        
+
         var page = JSON.parse(txtBigRequest.val());
 
         $.post(contextName + url, page, function(data) {
@@ -333,7 +352,7 @@ $('#btnGo').click(function(e) {
     } else if (currentAction == 'logout') {
         console.log('logout');
         var url = '/logout';
-        
+
         $.get(contextName + url, function(data) {
             txtBigResponse.val('Logout was successful');
             showNoAuth(true);

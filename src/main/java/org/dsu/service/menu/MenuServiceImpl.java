@@ -1,10 +1,13 @@
 package org.dsu.service.menu;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -16,6 +19,7 @@ import org.dsu.common.DateUtils;
 import org.dsu.common.ExceptionType;
 import org.dsu.common.VotingSystemException;
 import org.dsu.dao.dish.DishDAO;
+import org.dsu.dao.menuitem.MenuItemDAO;
 import org.dsu.dao.restaurant.RestaurantDAO;
 import org.dsu.domain.model.Authority;
 import org.dsu.domain.model.Dish;
@@ -25,6 +29,8 @@ import org.dsu.dto.converter.ConverterUtils;
 import org.dsu.json.DishJSON;
 import org.dsu.json.FieldErrorJSON;
 import org.dsu.json.MenuJSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -37,6 +43,8 @@ import org.springframework.util.Assert;
 @Service
 @Transactional
 public class MenuServiceImpl implements MenuService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MenuServiceImpl.class);
 
 	@Autowired
 	private MessageSource messageSource;
@@ -44,6 +52,8 @@ public class MenuServiceImpl implements MenuService {
 	private RestaurantDAO restaurantDAO;
 	@Autowired
 	private DishDAO dishDAO;
+	@Autowired
+	private MenuItemDAO menuItemDAO;
 
 	@Override
 	public MenuJSON getMenyByRestaurantId(Long restaurantId, LocalDate menuDate) {
@@ -99,9 +109,7 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public MenuJSON updateMenu(MenuJSON menu) {
-		// TODO Auto-generated method stub
-		// assert menu, rest, date and count of dishes
+	public void updateMenu(MenuJSON menu) {
 		Assert.notNull(menu);
 		Assert.notNull(menu.getResturantRef());
 		Assert.notNull(menu.getResturantRef().getId());
@@ -120,33 +128,68 @@ public class MenuServiceImpl implements MenuService {
 		
 
 		// get restaurant, if null then throw exception
+		Restaurant restaurant = restaurantDAO.findById(menu.getResturantRef().getId());
+		if (restaurant == null) {
+			VotingSystemException.throwEntityNotFound(Restaurant.class);
+		}
+		
+		// get dishes from the restaurant
+		// make map {id, dish}
+		Map<Long, Dish> dishesInDB = new HashMap<>();
+		for (Dish idxDish : restaurant.getDishes()) {
+			dishesInDB.put(idxDish.getId(), idxDish);
+		}
 
 		// go through new dishes list
-		// define and create instance dish entity
-		// set name and restaurant
-		// save in DB
-		// set id in DishJSON
-		// create MenuItem if price more than zero
-		// set dish, date and price, save in DB
-		// set price in dishjs
+		for(DishJSON idxNewDishJSON : dishContainer.getNewDishes()) {
+			Dish dish = new Dish();
+			dish.setName(idxNewDishJSON.getName());
+			dish.setRestaurant(restaurant);
+			dish = dishDAO.save(dish);
+			
+			//idxNewDishJSON.setId(dish.getId());
+			if(idxNewDishJSON.getPrice().compareTo(BigDecimal.ZERO) > 0) {
+				MenuItem item = new MenuItem();
+				item.setPrice(idxNewDishJSON.getPrice());
+				item.setDate(menu.getDate());
+				item.setDish(dish);
+				menuItemDAO.save(item);
+			}
+		}
 
 		// go through changed dishes
-		// get MenuItem for dish and date
-		// if menuItem is null then create new instance and save to DB if price more than zero
-		// else if menuItem is not null than remove it
-		// else set price and save to DB
-
-		// go through unchanged dishes by iterator
-		// get dish entity from DB
-		// if entity is NULL then remove dish
-		// else create new DishJSON, set id name, add to unchanged dishes array
-		// get menuItem and if exists than set price in dish
+		LocalDate menuDate = DateUtils.asLocalDate(menu.getDate());
+		LOGGER.info("date is {}, localdate is {}", menu.getDate(), menuDate);
+		for(DishJSON idxEditDish : dishContainer.getChangedDishes()) {
 		
-		//load new dishes
+			// get dish from map, set name, merge
+			Dish dish = dishesInDB.get(idxEditDish.getId());
+			if(dish == null) {
+				continue;
+			}
+			dish.setName(idxEditDish.getName());
+			dishDAO.save(dish);
+		
+			// get MenuItem for dish and date
+			MenuItem menuItem = dishDAO.getMenuItemByDishAndDate(dish, menuDate);
+		
+			// if menuItem is null then create new instance and save to DB if price more than zero
+			if(idxEditDish.getPrice().compareTo(BigDecimal.ZERO) > 0) {
+				if(menuItem == null) {
+					menuItem = new MenuItem();
+					menuItem.setDate(menu.getDate());
+					menuItem.setDish(dish);
+				}
+				menuItem.setPrice(idxEditDish.getPrice());
+				menuItemDAO.save(menuItem);
+			} else {
 
-		// merge 3 list, created, changed and unchanged dishes in one list
-		// set list to menuJSON object
-		return menu;
+				// else if menuItem is not null than remove it
+				if(menuItem != null) {
+					menuItemDAO.delete(menuItem.getId());
+				}
+			}
+		}
 	}
 
 	@Override
@@ -225,5 +268,13 @@ class DishFilterContainer {
 
 	public List<FieldErrorJSON> getFieldErrors() {
 		return fieldErrors;
+	}
+
+	public List<DishJSON> getNewDishes() {
+		return newDishes;
+	}
+
+	public List<DishJSON> getChangedDishes() {
+		return changedDishes;
 	}
 }

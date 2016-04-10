@@ -32,10 +32,9 @@ public class DishDAOImpl extends AbstractNamedDao<Dish> implements DishDAO {
 		Assert.notNull(dish.getId());
 		Assert.notNull(date);
 		
-		// TODO check time zones
-		String qlQuery = "SELECT o FROM MenuItem o WHERE o.dish.id = :dish_id AND o.date = :date ";
+		String qlQuery = "SELECT o FROM MenuItem o WHERE o.dish.id = ?1 AND o.date = ?2 ";
 		Query query = entityManager.createQuery(qlQuery);
-		query.setParameter(0, dish.getId()).setParameter(1, DateUtils.asDate(date));
+		query.setParameter(1, dish.getId()).setParameter(2, DateUtils.asDate(date));
 		@SuppressWarnings("unchecked")
 		List<MenuItem> prices = query.getResultList();
 		
