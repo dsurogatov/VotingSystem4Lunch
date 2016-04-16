@@ -131,7 +131,7 @@ var changeView = function(typeView) {
                     "id" : 5,
                     "name" : "a"
                 },
-                "date" : 1459458000000,
+                "date" : "2016-04-01",
                 "dishes" : [ {
                     //id : 1,
                     name : 'a2',
@@ -149,7 +149,8 @@ var changeView = function(typeView) {
         txtBigRequest.show();
         pCnt.hide();
         txtSmallRequest.hide();
-    } else if (typeView == 'deleteUser' || typeView == 'deleteRole' || typeView == 'deleteRestaurant' || typeView == 'getDishes') {
+    } else if (typeView == 'deleteUser' || typeView == 'deleteRole' || typeView == 'deleteRestaurant' || typeView == 'getDishes'
+        || typeView == 'deleteDish') {
         pnlBigRequest.show();
         txtBigRequest.hide();
         pCnt.hide();
@@ -318,7 +319,7 @@ $('#btnGo').click(function(e) {
             txtBigResponse.val(JSON.stringify(data, null, '  '));
             console.log('nice update');
         });
-    } else if (currentAction == 'deleteUser' || currentAction == 'deleteRole' || currentAction == 'deleteRestaurant') {
+    } else if (currentAction == 'deleteUser' || currentAction == 'deleteRole' || currentAction == 'deleteRestaurant' || currentAction == 'deleteDish') {
         console.log('delete id is', txtSmallRequest.val());
 
         var url = '/api/v1/user/';
@@ -326,6 +327,8 @@ $('#btnGo').click(function(e) {
             url = '/api/v1/role/';
         } else if (currentAction == 'deleteRestaurant') {
             url = '/api/v1/restaurant/';
+        } else if (currentAction == 'deleteDish') {
+            url = '/api/v1/dish/';
         }
 
         delet(contextName + url + txtSmallRequest.val(), function(data) {

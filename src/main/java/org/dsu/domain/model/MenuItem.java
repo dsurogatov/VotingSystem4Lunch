@@ -1,15 +1,13 @@
 package org.dsu.domain.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import org.dsu.domain.api.AbstractIdEntity;
@@ -26,9 +24,8 @@ public class MenuItem extends AbstractIdEntity {
 	@Column(precision=12, scale=2, nullable=false)
 	private BigDecimal price;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name="ITEM_DATE", nullable=false)
-	private Date date;
+	private LocalDate date;
 
 	public Dish getDish() {
 		return dish;
@@ -46,11 +43,11 @@ public class MenuItem extends AbstractIdEntity {
 		this.price = price;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 }

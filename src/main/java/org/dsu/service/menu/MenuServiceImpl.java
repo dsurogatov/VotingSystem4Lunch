@@ -15,7 +15,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.dsu.common.DateUtils;
 import org.dsu.common.ExceptionType;
 import org.dsu.common.VotingSystemException;
 import org.dsu.dao.dish.DishDAO;
@@ -92,7 +91,8 @@ public class MenuServiceImpl implements MenuService {
 		MenuJSON menu = new MenuJSON();
 		menu.setResturantRef(ConverterUtils.toDTO(restaurant));
 		menu.setDishes(dishes);
-		menu.setDate(DateUtils.asDate(menuDate));
+		//menu.setDate(DateUtils.asDate(menuDate));
+		menu.setDate(menuDate);
 
 		// get roles, if they contain ADMIN role when the editable field will be set 
 		@SuppressWarnings("unchecked")
@@ -158,7 +158,7 @@ public class MenuServiceImpl implements MenuService {
 		}
 
 		// go through changed dishes
-		LocalDate menuDate = DateUtils.asLocalDate(menu.getDate());
+		LocalDate menuDate = menu.getDate();
 		LOGGER.info("date is {}, localdate is {}", menu.getDate(), menuDate);
 		for(DishJSON idxEditDish : dishContainer.getChangedDishes()) {
 		
@@ -196,6 +196,7 @@ public class MenuServiceImpl implements MenuService {
 	public void deleteDish(Long dishId) {
 		Assert.notNull(dishId);
 
+		dishDAO.deleteRelations(dishId);
 		dishDAO.delete(dishId);
 	}
 
@@ -217,7 +218,7 @@ class DishFilterContainer {
 	}
 
 	boolean needUpdate(DishJSON dish, List<Long> changedDishesIds) {
-		if (dish.getId() == null || dish.getId() != 0l) {
+		if (dish.getId() == null || dish.getId() == 0l) {
 			return true;
 		} else if (changedDishesIds.contains(dish.getId())) {
 			return true;

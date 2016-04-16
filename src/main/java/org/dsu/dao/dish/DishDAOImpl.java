@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.dsu.common.DateUtils;
 import org.dsu.common.ExceptionType;
 import org.dsu.common.VotingSystemException;
 import org.dsu.dao.api.AbstractNamedDao;
@@ -34,7 +33,7 @@ public class DishDAOImpl extends AbstractNamedDao<Dish> implements DishDAO {
 		
 		String qlQuery = "SELECT o FROM MenuItem o WHERE o.dish.id = ?1 AND o.date = ?2 ";
 		Query query = entityManager.createQuery(qlQuery);
-		query.setParameter(1, dish.getId()).setParameter(2, DateUtils.asDate(date));
+		query.setParameter(1, dish.getId()).setParameter(2, date);
 		@SuppressWarnings("unchecked")
 		List<MenuItem> prices = query.getResultList();
 		

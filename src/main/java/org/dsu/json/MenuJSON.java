@@ -1,15 +1,20 @@
 package org.dsu.json;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.dsu.dto.api.BaseNamedDTO;
 
-public class MenuJSON {
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+public class MenuJSON {
+	
 	private BaseNamedDTO resturantRef;
-	private Date date;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")  
+	private LocalDate date;
+	
 	private List<DishJSON> dishes = new ArrayList<>();
 	private List<Long> changedDishesIds = new ArrayList<>();
 	private boolean editable;
@@ -22,18 +27,18 @@ public class MenuJSON {
 		this.resturantRef = resturantRef;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
 	public List<DishJSON> getDishes() {
 		return new ArrayList<>(dishes);
 	}
-	
+
 	public int getDishesCount() {
 		return dishes.size();
 	}

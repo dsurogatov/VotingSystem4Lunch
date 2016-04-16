@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import javax.validation.Valid;
 
-import org.dsu.common.DateUtils;
 import org.dsu.common.ThreadLocalDateFormat;
 import org.dsu.json.MenuJSON;
 import org.dsu.service.menu.MenuService;
@@ -40,7 +39,7 @@ public class MenuController {
 	@RequestMapping(value = "/api/v1/menu", method = RequestMethod.POST)
     public MenuJSON saveMenu(@Valid @RequestBody MenuJSON dto) {
 		menuService.updateMenu(dto);
-		LocalDate menuDate = DateUtils.asLocalDate(dto.getDate());
+		LocalDate menuDate = dto.getDate();
         return menuService.getMenyByRestaurantId(dto.getResturantRef().getId(), menuDate);
     }
 	
