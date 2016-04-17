@@ -7,14 +7,14 @@ import javax.persistence.Query;
 
 import org.dsu.common.ExceptionType;
 import org.dsu.common.VotingSystemException;
-import org.dsu.dao.api.AbstractNamedDao;
+import org.dsu.dao.api.AbstractNamedDAO;
 import org.dsu.domain.model.Dish;
 import org.dsu.domain.model.MenuItem;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 @Repository
-public class DishDAOImpl extends AbstractNamedDao<Dish> implements DishDAO {
+public class DishDAOImpl extends AbstractNamedDAO<Dish> implements DishDAO {
 
 	@Override
 	public void deleteRelations(Long id) {

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
  * @author nescafe Abstract class for the base implementation of CrudDao
  */
 @Repository
-public abstract class AbstractCrudDao<I> implements CrudDao<I> {
+public abstract class AbstractCrudDAO<I> implements CrudDAO<I> {
 
 	//private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCrudDao.class);
 
@@ -40,7 +40,7 @@ public abstract class AbstractCrudDao<I> implements CrudDao<I> {
 		I instance = (I) entityManager.find(getPersistentClass(), id);
 		return instance;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<I> findByPage(PageProp page, SortProp sort) {

@@ -1,9 +1,9 @@
 package org.dsu.dao.user;
 
-import org.dsu.dao.api.NamedDao;
+import org.dsu.dao.api.NamedDAO;
 import org.dsu.domain.model.User;
 
-public interface UserDAO extends NamedDao<User> {
+public interface UserDAO extends NamedDAO<User> {
 	
 	/** Get a user from database by the login value
 	 * @param login - the value of login name

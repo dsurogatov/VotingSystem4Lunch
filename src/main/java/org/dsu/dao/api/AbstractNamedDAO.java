@@ -8,7 +8,7 @@ import javax.persistence.Query;
 import org.apache.commons.lang.StringUtils;
 import org.dsu.domain.api.NamedEntity;
 
-public abstract class AbstractNamedDao<I extends NamedEntity> extends AbstractCrudDao<I> implements NamedDao<I> {
+public abstract class AbstractNamedDAO<I extends NamedEntity> extends AbstractCrudDAO<I> implements NamedDAO<I> {
 
 	@SuppressWarnings("unchecked")
 	@Override

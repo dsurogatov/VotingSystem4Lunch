@@ -2,7 +2,7 @@ package org.dsu.service.restaurant;
 
 import org.dsu.common.ExceptionType;
 import org.dsu.common.VotingSystemException;
-import org.dsu.dao.api.CrudDao;
+import org.dsu.dao.api.CrudDAO;
 import org.dsu.dao.restaurant.RestaurantDAO;
 import org.dsu.domain.model.Restaurant;
 import org.dsu.dto.model.RestaurantDTO;
@@ -20,7 +20,7 @@ public class RestaurantServiceImpl extends AbstractNamedService<RestaurantDTO, R
 	private RestaurantDAO dao;
 
 	@Override
-	protected CrudDao<Restaurant> getDao() {
+	protected CrudDAO<Restaurant> getDao() {
 		return dao;
 	}
 	

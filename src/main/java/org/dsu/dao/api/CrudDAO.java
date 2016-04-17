@@ -2,7 +2,7 @@ package org.dsu.dao.api;
 
 import java.util.List;
 
-public interface CrudDao<I> {
+public interface CrudDAO<I> {
 
 	I findById(Long id);
     List<I> findByPage(PageProp page, SortProp sort);

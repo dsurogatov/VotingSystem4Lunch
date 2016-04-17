@@ -67,7 +67,7 @@ var changeView = function(typeView) {
         pCnt.hide();
         txtSmallRequest.show();
     } else if (typeView == 'login' || typeView == 'createUser' || typeView == 'createRole' || typeView == 'createRoleUser' || typeView == 'deleteRoleUser'
-            || typeView == 'createRestaurant') {
+            || typeView == 'createRestaurant' || typeView == 'vote') {
         var reqObj = {
             id : null,
             name : 'a',
@@ -95,9 +95,17 @@ var changeView = function(typeView) {
             };
         } else if (typeView == 'createRestaurant') {
             reqObj = {
-                id : null,
-                name : 'a'
+                    id : null,
+                    name : 'a'
             };
+        } else if (typeView == 'vote') {
+            reqObj = {
+                    "resturantRef" : {
+                        "id" : 5,
+                        "name" : "a"
+                    },
+                    "dateTime" : "2016-04-01 10:44",
+                };
         }
 
         txtBigRequest.val(JSON.stringify(reqObj, null, '  '));
@@ -278,7 +286,7 @@ $('#btnGo').click(function(e) {
             }
         });
     } else if (currentAction == 'createUser' || currentAction == 'createRole' || currentAction == 'createRoleUser' || currentAction == 'createRestaurant'
-        || currentAction == 'updateDishes') {
+        || currentAction == 'updateDishes' || currentAction == 'vote') {
         console.log('request is', JSON.parse(txtBigRequest.val()));
         var url = contextName + '/api/v1/user';
         if (currentAction == 'createRole') {
@@ -289,6 +297,8 @@ $('#btnGo').click(function(e) {
             url = contextName + '/api/v1/restaurant';
         } else if (currentAction == 'updateDishes') {
             url = contextName + '/api/v1/menu';
+        } else if (currentAction == 'vote') {
+            url = contextName + '/api/v1/vote';
         }
 
         post(url, txtBigRequest.val(), function(data) {

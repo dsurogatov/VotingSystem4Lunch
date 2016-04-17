@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.dsu.dao.api.AbstractNamedDao;
+import org.dsu.dao.api.AbstractNamedDAO;
 import org.dsu.domain.model.User;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserDAOImpl extends AbstractNamedDao<User> implements UserDAO {
+public class UserDAOImpl extends AbstractNamedDAO<User> implements UserDAO {
 
 	@Override
 	public void deleteRelations(Long id) {

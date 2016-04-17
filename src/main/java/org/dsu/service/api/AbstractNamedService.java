@@ -2,7 +2,7 @@ package org.dsu.service.api;
 
 import java.util.List;
 
-import org.dsu.dao.api.NamedDao;
+import org.dsu.dao.api.NamedDAO;
 import org.dsu.dao.api.PageProp;
 import org.dsu.dao.api.SortProp;
 import org.dsu.domain.api.NamedEntity;
@@ -13,8 +13,8 @@ import org.springframework.util.Assert;
 
 public abstract class AbstractNamedService<I extends BaseNamedDTO, E extends NamedEntity> extends AbstractCrudService<I, E> implements NamedService<I> {
 
-	protected NamedDao<E> getNamedDao() {
-		return (NamedDao<E>) getDao();
+	protected NamedDAO<E> getNamedDao() {
+		return (NamedDAO<E>) getDao();
 	}
 	
 	@Override

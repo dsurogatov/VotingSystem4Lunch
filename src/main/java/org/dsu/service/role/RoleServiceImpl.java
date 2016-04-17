@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.dsu.common.VotingSystemException;
-import org.dsu.dao.api.CrudDao;
+import org.dsu.dao.api.CrudDAO;
 import org.dsu.dao.api.PageProp;
 import org.dsu.dao.api.SortProp;
 import org.dsu.dao.role.RoleDAO;
@@ -33,7 +33,7 @@ public class RoleServiceImpl extends AbstractNamedService<RoleDTO, Role> impleme
 	private UserDAO userDao;
 	
 	@Override
-	protected CrudDao<Role> getDao() {
+	protected CrudDAO<Role> getDao() {
 		return dao;
 	}
 

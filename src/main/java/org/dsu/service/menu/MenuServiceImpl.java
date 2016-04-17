@@ -28,9 +28,11 @@ import org.dsu.dto.converter.ConverterUtils;
 import org.dsu.json.DishJSON;
 import org.dsu.json.FieldErrorJSON;
 import org.dsu.json.MenuJSON;
+import org.dsu.service.ServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -53,6 +55,9 @@ public class MenuServiceImpl implements MenuService {
 	private DishDAO dishDAO;
 	@Autowired
 	private MenuItemDAO menuItemDAO;
+	
+	@Value( "${max_number_of_dishes_in_restaurant}" )
+	private int maxNumOfDishes;
 
 	@Override
 	public MenuJSON getMenyByRestaurantId(Long restaurantId, LocalDate menuDate) {
@@ -61,11 +66,8 @@ public class MenuServiceImpl implements MenuService {
 
 		// get restaurant
 		// check if not exist
-		Restaurant restaurant = restaurantDAO.findById(restaurantId);
-		if (restaurant == null) {
-			VotingSystemException.throwEntityNotFound(Restaurant.class);
-		}
-
+		Restaurant restaurant = ServiceHelper.findRestaurant(restaurantId, restaurantDAO);
+		
 		// define dishDTO's list
 		List<DishJSON> dishes = new ArrayList<>();
 
@@ -113,7 +115,10 @@ public class MenuServiceImpl implements MenuService {
 		Assert.notNull(menu);
 		Assert.notNull(menu.getResturantRef());
 		Assert.notNull(menu.getResturantRef().getId());
-		if(menu.getDishesCount() > 5){
+		if(!menu.isEditable()) {
+			throw new VotingSystemException(ExceptionType.DENY_EDIT_MENY);
+		}
+		if(menu.getDishesCount() > maxNumOfDishes){
 			throw new VotingSystemException(ExceptionType.MAX_DISH_IN_RESTAURANT);
 		}
 		
@@ -128,10 +133,7 @@ public class MenuServiceImpl implements MenuService {
 		
 
 		// get restaurant, if null then throw exception
-		Restaurant restaurant = restaurantDAO.findById(menu.getResturantRef().getId());
-		if (restaurant == null) {
-			VotingSystemException.throwEntityNotFound(Restaurant.class);
-		}
+		Restaurant restaurant = ServiceHelper.findRestaurant(menu.getResturantRef().getId(), restaurantDAO);
 		
 		// get dishes from the restaurant
 		// make map {id, dish}

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.dsu.common.ExceptionType;
 import org.dsu.common.VotingSystemException;
-import org.dsu.dao.api.CrudDao;
+import org.dsu.dao.api.CrudDAO;
 import org.dsu.dao.api.PageProp;
 import org.dsu.dao.api.SortProp;
 import org.dsu.domain.api.IdEntity;
@@ -17,7 +17,7 @@ import org.springframework.util.Assert;
 @Transactional
 public abstract class AbstractCrudService<I extends IdDTO, E extends IdEntity> implements CrudService<I> {
 	
-	protected abstract CrudDao<E> getDao();
+	protected abstract CrudDAO<E> getDao();
 
 	@Override
 	public I findById(Long id) {

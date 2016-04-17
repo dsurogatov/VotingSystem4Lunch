@@ -3,7 +3,7 @@ package org.dsu.service.user;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.dsu.dao.api.CrudDao;
+import org.dsu.dao.api.CrudDAO;
 import org.dsu.dao.user.UserDAO;
 import org.dsu.domain.model.User;
 import org.dsu.dto.converter.ConverterUtils;
@@ -25,7 +25,7 @@ public class UserServiceImpl extends AbstractNamedService<UserDTO, User> impleme
 	private UserDAO dao;
 
 	@Override
-	protected CrudDao<User> getDao() {
+	protected CrudDAO<User> getDao() {
 		return dao;
 	}
 	

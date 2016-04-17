@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
-import org.dsu.dao.api.AbstractNamedDao;
+import org.dsu.dao.api.AbstractNamedDAO;
 import org.dsu.dao.api.PageProp;
 import org.dsu.dao.api.SortProp;
 import org.dsu.domain.model.Authority;
@@ -18,7 +18,7 @@ import org.dsu.domain.model.User_RoleId;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RoleDAOImpl extends AbstractNamedDao<Role> implements RoleDAO {
+public class RoleDAOImpl extends AbstractNamedDAO<Role> implements RoleDAO {
 
 	@Override
 	public void deleteRelations(Long id) {
