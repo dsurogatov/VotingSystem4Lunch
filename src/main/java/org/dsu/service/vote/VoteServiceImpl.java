@@ -12,6 +12,7 @@ import org.dsu.dao.vote.VoteDAO;
 import org.dsu.domain.model.Restaurant;
 import org.dsu.domain.model.User;
 import org.dsu.domain.model.Vote;
+import org.dsu.dto.model.RestaurantDTO;
 import org.dsu.json.VoteJSON;
 import org.dsu.service.ServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,12 @@ public class VoteServiceImpl implements VoteService {
 			vote.setUser(user);
 		}
 		voteDAO.save(vote);
+	}
+
+	@Override
+	public RestaurantDTO getElectedRestaurant(LocalDate date) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
