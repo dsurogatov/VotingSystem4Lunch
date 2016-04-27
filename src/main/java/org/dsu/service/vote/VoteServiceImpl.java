@@ -2,6 +2,9 @@ package org.dsu.service.vote;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.dsu.common.DateUtils;
 import org.dsu.common.ExceptionType;
@@ -12,6 +15,7 @@ import org.dsu.dao.vote.VoteDAO;
 import org.dsu.domain.model.Restaurant;
 import org.dsu.domain.model.User;
 import org.dsu.domain.model.Vote;
+import org.dsu.dto.converter.ConverterUtils;
 import org.dsu.dto.model.RestaurantDTO;
 import org.dsu.json.VoteJSON;
 import org.dsu.service.ServiceHelper;
@@ -81,9 +85,21 @@ public class VoteServiceImpl implements VoteService {
 	}
 
 	@Override
-	public RestaurantDTO getElectedRestaurant(LocalDate date) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RestaurantDTO> getVotedResult(LocalDate date) {
+		// get map of restaurants and count votes by day
+		Map<Long, Long> restIdVotesCnt = voteDAO.getRestaurantIdAndVotesCnt(date);
+		
+		// create ret list
+		List<RestaurantDTO> retList = new ArrayList<>();
+		for(Map.Entry<Long, Long> idxEntry : restIdVotesCnt.entrySet()){
+			Restaurant restaurant = restaurantDAO.findById(idxEntry.getKey());
+			if(restaurant != null) {
+				RestaurantDTO restaurantDTO = ConverterUtils.toDTO(restaurant);
+				restaurantDTO.setVoteCnt(idxEntry.getValue().intValue());
+				retList.add(restaurantDTO);
+			}
+		}
+		return retList;
 	}
 
 }

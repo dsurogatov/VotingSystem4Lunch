@@ -67,7 +67,7 @@ var changeView = function(typeView) {
         pCnt.hide();
         txtSmallRequest.show();
     } else if (typeView == 'login' || typeView == 'createUser' || typeView == 'createRole' || typeView == 'createRoleUser' || typeView == 'deleteRoleUser'
-            || typeView == 'createRestaurant' || typeView == 'vote') {
+            || typeView == 'createRestaurant' || typeView == 'vote' ) {
         var reqObj = {
             id : null,
             name : 'a',
@@ -158,7 +158,7 @@ var changeView = function(typeView) {
         pCnt.hide();
         txtSmallRequest.hide();
     } else if (typeView == 'deleteUser' || typeView == 'deleteRole' || typeView == 'deleteRestaurant' || typeView == 'getDishes'
-        || typeView == 'deleteDish') {
+        || typeView == 'deleteDish' || typeView == 'result') {
         pnlBigRequest.show();
         txtBigRequest.hide();
         pCnt.hide();
@@ -349,6 +349,12 @@ $('#btnGo').click(function(e) {
         $.get(contextName + url + txtSmallRequest.val(), function(data) {
             data.dates = moment(data.date).format("YYYY-MM-DD HH:mm");
             // data.dates1 = new Date(data.date).toString();
+            txtBigResponse.val(JSON.stringify(data, null, '  '));
+            showNoAuth(false);
+        });
+    } else if (currentAction == 'result') {
+        var url = '/api/v1/vote/result/';
+        $.get(contextName + url + txtSmallRequest.val(), function(data) {
             txtBigResponse.val(JSON.stringify(data, null, '  '));
             showNoAuth(false);
         });

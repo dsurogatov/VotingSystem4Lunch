@@ -1,5 +1,7 @@
 package org.dsu.controller.rest;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.dsu.common.DateUtils;
@@ -15,18 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class VoteController {
-	
+
 	@Autowired
 	private VoteService voteService;
-	
-	@RequestMapping(value = {"/api/v1/vote/restaurant/{date}"}, method = RequestMethod.GET)
-    public RestaurantDTO getElectedRestaurant(@PathVariable("date") String date) {
-		return voteService.getElectedRestaurant(DateUtils.parse2Date(date));
+
+	@RequestMapping(value = { "/api/v1/vote/result/{date}" }, method = RequestMethod.GET)
+	public List<RestaurantDTO> getElectedRestaurant(@PathVariable("date") String date) {
+		return voteService.getVotedResult(DateUtils.parse2Date(date));
 	}
 
 	@RequestMapping(value = "/api/v1/vote", method = RequestMethod.POST)
-    public VoteJSON vote(@Valid @RequestBody VoteJSON dto) {
-        voteService.vote(dto);
-        return dto;
-    }
+	public VoteJSON vote(@Valid @RequestBody VoteJSON dto) {
+		voteService.vote(dto);
+		return dto;
+	}
 }
